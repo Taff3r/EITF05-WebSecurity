@@ -1,0 +1,9 @@
+body{
+  background-color: rgb(216, 242, 133);
+}
+
+div{
+  background-color: rgb(237, 235, 208);
+  border: 5px rgb(237, 235, 208);
+  padding: 5px;
+}

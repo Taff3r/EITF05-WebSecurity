@@ -4,7 +4,7 @@ $password = $_POST['password'];
 $repeatPass = $_POST['repeatPass'];
 
 
-$conn = new mysqli("localhost", "root", "","testdb") or die("Connect failed: %s\n". $conn -> error);
+$conn = new mysqli("localhost", "root", "","WebShopDB") or die("Connect failed: %s\n". $conn -> error);
 $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
 
 
@@ -13,8 +13,15 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
   }elseif ($password != $repeatPass) {
     echo "Passwords are not equal";
   }else{
+    $hash = hash("sha256", generateSalt() + $password);
     $insertUser = "INSERT INTO users VALUES ('$username', '$password')";
     mysqli_query($conn, $insertUser);
     echo "Congratulations, $username, you're now ready to shop!";
+  }
+
+
+
+  function generateSalt(){
+    // Generate 6 char salt
   }
 ?>

@@ -6,9 +6,8 @@
 
 
 	$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
-		if($lookup[0] == NULL){
-			echo "No such user";
-		}elseif($lookup['name'] == $username && $lookup['hash'] == hash("sha256", $lookup['salt']+$password)){
+
+		if($lookup['name'] == $username && password_verify($password,$lookup['hash'])){  // Verifies the password to the hashed one.
 			echo "Login sucessfull";
 		}else{
 			echo "Wrong Username and/or password";

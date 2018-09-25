@@ -2,7 +2,9 @@
 $username = $_POST['name'];
 $password = $_POST['password'];
 $repeatPass = $_POST['repeatPass'];
-
+$uppercast = preg_match('@[A-Z]@', $password);
+$lowercast = preg_match('@[a-z]@', $password);
+$number = preg_match('@[0-9]@', $password);
 
 $conn = new mysqli("localhost", "root", "","WebShopDB") or die("Connect failed: %s\n". $conn -> error);
 $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
@@ -10,6 +12,8 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
 
   if($lookupName['name'] == $username){
     echo "Username not available";
+   }elseif(!$uppercase || !$lowercase || !$number || strln($password) < 8){
+     echo "You need to use both uppercase, lowercase and numbers in your password and it has to be longer than 8 characters";
   }elseif ($password != $repeatPass) {
     echo "Passwords are not equal";
   }else{

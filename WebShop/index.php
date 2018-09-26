@@ -10,29 +10,28 @@
 	<body>
 
 		<div class = "header">
-			<div class = "alignButton">
-				<form action = "login.php" method = "post" class = "button">
-					<input type = "submit" value = "I want to log in">
-				</form>
-				<form action = "register.php" method = "post" class = "button">
-					<input type = "submit" value = "I want to register">
-				</form>
-				<form action ="checkout.php" method="get" class = "button">
-					<input type = "submit" value = "Checkout">
-				</form>
-			</div>
 			<div class = "headerText">
-				<h1> eXoticPets.com <p class ="italicsHeader"> - We're totally legal </p></h1>
+				<h1> eXoticPets.com <p class ="italicsHeader"> - We're totally legal* </p></h1>
 			</div>
 		</div>
+
+    <div class = "mainWindow">
+		  <h1 class = "centerText"> Welcome to eXoticPets.com, your totally 100% legal* importer of exotic animals! </h1>
+      <p class = centerText> Please choose one of the items from the menu to the left. </p>
+      <p class = "footnote"> *Depends on what you mean by <i>legal</i> </p>
+		</div>
+
 
 		<div class= "sideMenu">
-			<p> test </p>
+      <ul>
+       <li><a href="products.php">Browse products</a></li>
+       <li><a href="guestbook.php">Guestbook</a></li>
+       <li><a href="login.php">Login</a></li>
+       <li><a href="register.php">Register</a></li>
+       <li><a href="checkout.php">Checkout</a></li>
+     </ul>
 		</div>
 
-		<div class = "mainWindow";>
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		</div>
 
 
 	</body>

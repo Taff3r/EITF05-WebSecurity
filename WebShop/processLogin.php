@@ -9,8 +9,10 @@
 
 		if($lookup['name'] == $username && password_verify($password,$lookup['hash'])){  // Verifies the password to the hashed one.
 			echo "Login sucessfull";
+      echo ' <a href="index.php">return home</a> ';
 		}else{
 			echo "Wrong Username and/or password";
+      echo ' <a href="index.php">return home</a> ';
 		}
 
 

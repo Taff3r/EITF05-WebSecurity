@@ -12,7 +12,7 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
 
   if($lookupName['name'] == $username){
     echo "Username not available";
-   }elseif(!$uppercase || !$lowercase || !$number || strln($password) < 8){
+  }elseif(!$uppercast || !$lowercast || !$number || strlen($password) < 8){
      echo "You need to use both uppercase, lowercase and numbers in your password and it has to be longer than 8 characters";
   }elseif ($password != $repeatPass) {
     echo "Passwords are not equal";

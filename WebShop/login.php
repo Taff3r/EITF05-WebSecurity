@@ -1,4 +1,4 @@
-<html> 
+<html>
 	<title>
 		Please log in
 	</title>
@@ -6,7 +6,7 @@
 	<body>
 		<form action="processLogin.php" method="post">
 			Name: <input type="text" name="name"><br>
-			Password: <input type="text" name="password"><br>
+			Password: <input type="password" name="password"><br>
 			<input type="submit" value = "Log in">
 		</form>
 	</body>

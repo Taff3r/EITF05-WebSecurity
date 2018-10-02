@@ -24,11 +24,17 @@
 
 		<div class= "sideMenu">
       <ul>
+		 <?php
+			if(isset($_COOKIE['username'])){
+				echo "Inloggad som ",  $_COOKIE['username'];  
+			}
+		?>
        <li><a href="products.php">Browse products</a></li>
        <li><a href="guestbook.php">Guestbook</a></li>
        <li><a href="login.php">Login</a></li>
        <li><a href="register.php">Register</a></li>
        <li><a href="checkout.php">Checkout</a></li>
+	<li><a href="logout.php">Logout</a></li>
      </ul>
 		</div>
 

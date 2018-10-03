@@ -15,8 +15,8 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
     echo "Username not available";
     echo ' <a href="index.php">return home</a> ';
   }elseif(strpos(file_get_contents("blacklist.txt"),$password) !== false || !$uppercast || !$lowercast || !$number || strlen($password) < 8 || $address == ""){
-     echo "You need to use both uppercase, lowercase and numbers in your password and it has to be longer than 8 characters. It could also be the case that your password is just to common.";
-     echo ' <a href="index.php">return home</a> ';
+    echo "You need to use both uppercase, lowercase and numbers in your password and it has to be longer than 8 characters. It could also be the case that your password is just to common.";
+    echo ' <a href="index.php">return home</a> ';
   }elseif ($password != $repeatPass) {
     echo "Passwords are not equal";
     echo ' <a href="index.php">return home</a> ';

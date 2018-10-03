@@ -12,15 +12,15 @@
 
 <a href="index.php">Return home</a>
 <br>
-<?php 
+<?php
 if(isLoggedIn()){
 	$user = $_COOKIE['username'];
 	$conn = new mysqli("localhost", "root", "","WebShopDB");
 	#har döpt product_name men vet ej vad den heter i er WebShopDB
-	$getQuery = "SELECT product_name FROM itemsincart WHERE username = '$user'";
-	
+	$getQuery = "SELECT product_name FROM itemsincart WHERE name = '$user'";
+
 		if($result = mysqli_query($conn, $getQuery)){
-			
+
 			while($row = mysqli_fetch_assoc($result)){
 				#printf("(%s \n )", $row["product_name"]);
 				echo( $row["product_name"]);

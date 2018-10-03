@@ -26,7 +26,7 @@
       <ul>
 		 <?php
 			if(isset($_COOKIE['username'])){
-				echo "Inloggad som ",  $_COOKIE['username'];  
+				echo "Inloggad som ",  $_COOKIE['username'];
 			}
 		?>
        <li><a href="products.php">Browse products</a></li>

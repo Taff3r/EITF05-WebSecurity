@@ -56,8 +56,8 @@ function isLoggedIn(){
 
     <input type="submit" name = "bird" value = "Add to cart">
   </form>
-
-<img src="images/giraffe.jpg" alt ="Giraffe"  width="150" height="200"/>
+  <?php $test = "images/giraffe.jpg"; ?>
+<img src="<?php echo $test ?>" alt ="Giraffe"  width="150" height="200"/>
 <p> Giraff </p>
 <form  method="post" action="products.php">
 

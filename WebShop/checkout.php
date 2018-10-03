@@ -22,7 +22,6 @@ if(isLoggedIn()){
 		if($result = mysqli_query($conn, $getQuery)){
 
 			while($row = mysqli_fetch_assoc($result)){
-				#printf("(%s \n )", $row["product_name"]);
 				echo( $row["product_name"]);
 				echo "<br>";
 			}
@@ -36,11 +35,20 @@ echo "You are not logged in and therfore have no items in your cart";
 function isLoggedIn(){
   return isset($_COOKIE['username']);
 }
+
+
+if(isset($_POST['delete'])){
+      $command ="DELETE FROM itemsincart WHERE username = '$user'";
+      mysqli_query($conn,$command);
+      echo "Your cart is now empty";
+  }
+ 
+  
 ?>
+<li><a href="kvitto.php">Buy</a></li>
 
 <form  method="post" action="checkout.php">
-
-    <input type="submit" name = "" value = "Buy">
+<input type="submit" name = "delete" value = "Delete cart">
   </form>
 
 </div>

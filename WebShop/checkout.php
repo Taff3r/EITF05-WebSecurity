@@ -22,28 +22,39 @@ if(isLoggedIn()){
 		if($result = mysqli_query($conn, $getQuery)){
 
 			while($row = mysqli_fetch_assoc($result)){
-				echo( $row["product_name"]);
+				echo( $row["product_name"] . "	" . getPriceOfProduct($conn, $row["product_name"]));
 				echo "<br>";
 			}
+			echo "<br>" . "Total price: " . totalPrice($conn,$user);
+
 			 }else{
-			  echo "0 products in cart";
+			  	echo "0 products in cart";
 			  }
 }else{
-echo "You are not logged in and therfore have no items in your cart";
+	echo "You are not logged in and therfore have no items in your cart";
 }
-
-function isLoggedIn(){
-  return isset($_COOKIE['username']);
-}
-
 
 if(isset($_POST['delete'])){
       $command ="DELETE FROM itemsincart WHERE username = '$user'";
       mysqli_query($conn,$command);
       echo "Your cart is now empty";
   }
- 
-  
+
+	function isLoggedIn(){
+	  return isset($_COOKIE['username']);
+	}
+
+	function getPriceOfProduct($conn, $productName){
+		$getPrice = "SELECT price FROM products WHERE product_name = '$productName'";
+		return mysqli_fetch_array(mysqli_query($conn, $getPrice))['price'] . ' ETH';
+	}
+
+	function totalPrice($conn, $user){
+		$query = "SELECT SUM(price) AS total FROM products LEFT JOIN itemsincart USING (product_name) WHERE name = '$user'";
+		return mysqli_fetch_array(mysqli_query($conn, $query))['total'] . ' ETH';
+	}
+
+
 ?>
 <li><a href="kvitto.php">Buy</a></li>
 

@@ -4,7 +4,7 @@
 	$conn = new mysqli("localhost", "root", "","WebShopDB"); # or die("Connect failed: %s\n". $conn -> error);
 
 	$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
-  $attempts = mysqli_fetch_array(mysqli_query($conn,"SELECT attempts FROM loginAttempts WHERE name = '$username'"));
+  $attempts = @mysqli_fetch_array(mysqli_query($conn,"SELECT attempts FROM loginAttempts WHERE name = '$username'"));
     if($attempts['attempts'] >= 5){
       echo "Too many attempts to login for this user was made, please contact the admin at admin@forget.it";
       echo ' <a href="index.php">return home</a> ';

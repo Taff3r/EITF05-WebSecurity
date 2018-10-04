@@ -10,7 +10,7 @@
 <h1> Products </h1>
 <a href="index.php">Return home</a>
 <div class = "row">
-  <form action="products.php" method="post">
+  <form action="testProducts.php" method="post">
     Search for product: <input type="text" name="input">
     <input type="submit" value = "Search">
   </form>
@@ -45,7 +45,7 @@
     function constructProduct($productName, $price){
       echo '<img src = images/' . $productName . ".jpg alt = ". $productName . ' width="150" height="200"/>
       <p>  &nbsp&nbsp&nbsp' . $price . ' ETH </p>
-      <form  method="post" action="products.php"> <br>
+      <form  method="post" action="testProducts.php"> <br>
       <input type="submit" name = ' . $productName . ' value = "Add to cart">
       </form>';
     }

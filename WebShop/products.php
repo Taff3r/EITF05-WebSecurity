@@ -9,82 +9,74 @@
 
 <h1> Products </h1>
 <a href="index.php">Return home</a>
+<div class = "row">
+  <form action="testProducts.php" method="post">
+    Search for product: <input type="text" name="input">
+    <input type="submit" value = "Search">
+  </form>
+  <?php
 
-<div class ="row">
-
-<?php
-  $addedProduct = getProduct();
-  if($addedProduct != NULL){
-    if(isLoggedIn()){
-      $user = $_COOKIE['username'];
-      $conn = new mysqli("localhost", "root", "","WebShopDB");
-      $insertQuery =  "INSERT INTO itemsincart VALUES ('$addedProduct', '$user')";
-      mysqli_query($conn,$insertQuery);
-      echo "$addedProduct has been added to your cart!<br><br>";
-    }else{
-      echo "Must be logged in to add items to chart!<br><br>";
+    $addedProduct = getProduct();
+    if($addedProduct != "noSuchProduct"){
+      if(isLoggedIn()){
+        $user = $_COOKIE['username'];
+        $conn = new mysqli("localhost", "root", "","WebShopDB");
+        $insertQuery =  "INSERT INTO itemsincart VALUES ('$addedProduct', '$user')";
+        mysqli_query($conn,$insertQuery);
+        echo "$addedProduct has been added to your cart!<br><br>";
+      }else{
+        echo "Must be logged in to add items to chart!<br><br>";
+      }
     }
-  }
+    if(isset($_POST['input'])){
+      $input = $_POST['input'];
+      # Försök härma denna för injektion
+      #$injection = "SELECT * FROM products WHERE product_name LIKE '%' UNION(SELECT name, hash FROM users); #'%' ";
+      $query = "SELECT * FROM products WHERE product_name LIKE '%$input%'";
+      $conn = new mysqli("localhost", "root", "","WebShopDB");
+      $result = mysqli_query($conn, $query);
+      while ($row = mysqli_fetch_assoc($result)) {
+        constructProduct($row['product_name'], $row['price']);
+        echo "<br><br>";
+      }
 
-# Tur att inte Christian ser detta, verkligen inte Open-Closed.
-function getProduct(){
-  if(isset($_POST['bird'])){
-      return "bird";
-  }
-  if(isset($_POST['giraffe'])){
-      return "giraffe";
-  }
-  if(isset($_POST['lemur'])){
-      return "lemur";
-  }
-  if(isset($_POST['tiger'])){
-      return "tiger";
-  }
-  if(isset($_POST['lion'])){
-      return "lion";
-  }
-  return NULL;
-}
+    }
 
-function isLoggedIn(){
-  return isset($_COOKIE['username']);
-}
-?>
-<img src='images/bird.jpg' alt ="Bird" width="150" height="200"/>
-<p> Macaw parrot from South America </p>
-<form  method="post" action="products.php">
+    function constructProduct($productName, $price){
+      echo '<img src = images/' . $productName . ".jpg alt = ". $productName . ' width="150" height="200"/>
+      <p>  &nbsp&nbsp&nbsp' . $price . ' ETH </p>
+      <form  method="post" action="testProducts.php"> <br>
+      <input type="submit" name = ' . $productName . ' value = "Add to cart">
+      </form>';
+    }
 
-    <input type="submit" name = "bird" value = "Add to cart">
-  </form>
-  <?php $test = "images/giraffe.jpg"; ?>
-<img src="<?php echo $test ?>" alt ="Giraffe"  width="150" height="200"/>
-<p> Giraff </p>
-<form  method="post" action="products.php">
+    function getProduct(){
+      if(isset($_POST['bird'])){
+          return "bird";
+      }
+      if(isset($_POST['giraffe'])){
+          return "giraffe";
+      }
+      if(isset($_POST['lemur'])){
+          return "lemur";
+      }
+      if(isset($_POST['tiger'])){
+          return "tiger";
+      }
+      if(isset($_POST['lion'])){
+          return "lion";
+      }
+      return "noSuchProduct";
+    }
 
-    <input type="submit" name = "giraffe" value = "Add to cart">
-  </form>
+    function isLoggedIn(){
+      return isset($_COOKIE['username']);
+    }
 
-<img src="images/tigers.jpg" alt ="Tiger" width="150" height="200"/>
-<p> Beautiful tiger from Nepal </p>
-<form  method="post" action="products.php">
 
-    <input type="submit" name = "tiger" value = "Add to cart">
-  </form>
 
-<img src="images/lemur.jpg" alt ="Lemur"  width="150" height="200"/>
-<p> Lemur from Ystaddjurpark </p>
-<form  method="post" action="products.php">
-
-    <input type="submit" name = "lemur" value = "Add to cart">
-  </form>
-
-<img src="images/lions.jpg" alt ="lion" width="150" height="200"/>
-<p> White lion </p>
-<form  method="post" action="products.php">
-
-    <input type="submit" name ="lion" value = "Add to cart">
-  </form>
+  ?>
 
 </div>
+
 </body>
-</html>

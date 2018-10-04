@@ -16,6 +16,12 @@
 if(isLoggedIn()){
 	$user = $_COOKIE['username'];
 	$conn = new mysqli("localhost", "root", "","WebShopDB");
+
+	if(isset($_POST['delete'])){
+				$delete = "DELETE FROM itemsincart WHERE name = '$user'";
+				mysqli_query($conn, $delete);
+	      echo "Your cart is now empty";
+	  }
 	#har döpt product_name men vet ej vad den heter i er WebShopDB
 	$getQuery = "SELECT product_name FROM itemsincart WHERE name = '$user'";
 
@@ -34,11 +40,7 @@ if(isLoggedIn()){
 	echo "You are not logged in and therfore have no items in your cart";
 }
 
-if(isset($_POST['delete'])){
-      $command ="DELETE FROM itemsincart WHERE username = '$user'";
-      mysqli_query($conn,$command);
-      echo "Your cart is now empty";
-  }
+
 
 	function isLoggedIn(){
 	  return isset($_COOKIE['username']);

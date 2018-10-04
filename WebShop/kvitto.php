@@ -38,7 +38,8 @@
 				echo("<br>");
 				echo("Address: " . $row["address"]);
 				echo("<br>");
-
+				$delete = "DELETE FROM itemsincart WHERE name = '$user'";
+				mysqli_query($conn, $delete);
 			}
 			 }else{
 			  echo "";

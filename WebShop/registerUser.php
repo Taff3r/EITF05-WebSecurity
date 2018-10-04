@@ -26,7 +26,7 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
     $insertCounter = "INSERT INTO loginattempts VALUES('$username', 0)";
     mysqli_query($conn, $insertUser);
     mysqli_query($conn, $insertCounter);
-    setcookie('username', $username, time() + 3600, '/');
+    setcookie('username', $username, time() + 3600, '/WebShop');
     echo "Congratulations, $username, you're now ready to shop!";
     echo ' <a href="index.php">return home</a> ';
   }

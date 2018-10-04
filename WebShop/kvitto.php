@@ -15,17 +15,20 @@
 	$user = $_COOKIE['username'];
 	$conn = new mysqli("localhost", "root", "","WebShopDB");
 	#har döpt product_name men vet ej vad den heter i er WebShopDB
-	$getQuery = "SELECT product_name FROM itemsincart WHERE name = '$user'";
+	$getQuery = "SELECT * FROM itemsincart JOIN products USING (product_name) WHERE name = '$user'";
 	$addressQuery = "SELECT name, address FROM users WHERE name = '$user'";
-
+	$totalPriceQuery = "SELECT SUM(price) as total FROM itemsincart JOIN products USING (product_name) WHERE name = '$user'";
 		if($result = mysqli_query($conn, $getQuery)){
 			echo "Your receipt: <br>";
 			while($row = mysqli_fetch_assoc($result)){
-				echo($row["product_name"]);
+				echo($row["product_name"]  . "	" . $row["price"] . "	ETH");
 				echo "<br>";
-
-
 			}
+			echo "Total price: " . mysqli_fetch_assoc(mysqli_query($conn, $totalPriceQuery))['total'] . " ETH";
+
+
+
+
 			if($result = mysqli_query($conn, $addressQuery)){
 				echo("<br>");
 				echo "An invoice has been sent to: <br>";

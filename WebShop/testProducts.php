@@ -15,17 +15,66 @@
     <input type="submit" value = "Search">
   </form>
   <?php
+
+    $addedProduct = getProduct();
+    if($addedProduct != "noSuchProduct"){
+      if(isLoggedIn()){
+        $user = $_COOKIE['username'];
+        $conn = new mysqli("localhost", "root", "","WebShopDB");
+        $insertQuery =  "INSERT INTO itemsincart VALUES ('$addedProduct', '$user')";
+        mysqli_query($conn,$insertQuery);
+        echo "$addedProduct has been added to your cart!<br><br>";
+      }else{
+        echo "Must be logged in to add items to chart!<br><br>";
+      }
+    }
     if(isset($_POST['input'])){
       $input = $_POST['input'];
-      $test = "SELECT * FROM products WHERE product_name LIKE '%%' UNION(SELECT name, hash FROM users);#";
+      # Försök härma denna för injektion
+      #$injection = "SELECT * FROM products WHERE product_name LIKE '%' UNION(SELECT name, hash FROM users); #'%' ";
       $query = "SELECT * FROM products WHERE product_name LIKE '%$input%'";
       $conn = new mysqli("localhost", "root", "","WebShopDB");
-      $result = mysqli_query($conn, $test);
+      $result = mysqli_query($conn, $query);
       while ($row = mysqli_fetch_assoc($result)) {
-         echo $row['product_name'] . " " . $row['price'] . "<br><br>";
+        constructProduct($row['product_name'], $row['price']);
+        echo "<br><br>";
       }
 
     }
+
+    function constructProduct($productName, $price){
+      echo '<img src = images/' . $productName . ".jpg alt = ". $productName . ' width="150" height="200"/>
+      <p>  &nbsp&nbsp&nbsp' . $price . ' ETH </p>
+      <form  method="post" action="testProducts.php"> <br>
+      <input type="submit" name = ' . $productName . ' value = "Add to cart">
+      </form>';
+    }
+
+    function getProduct(){
+      if(isset($_POST['bird'])){
+          return "bird";
+      }
+      if(isset($_POST['giraffe'])){
+          return "giraffe";
+      }
+      if(isset($_POST['lemur'])){
+          return "lemur";
+      }
+      if(isset($_POST['tiger'])){
+          return "tiger";
+      }
+      if(isset($_POST['lion'])){
+          return "lion";
+      }
+      return "noSuchProduct";
+    }
+
+    function isLoggedIn(){
+      return isset($_COOKIE['username']);
+    }
+
+
+
   ?>
 
 </div>

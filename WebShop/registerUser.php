@@ -8,6 +8,7 @@ $lowercast = preg_match('@[a-z]@', $password);
 $number = preg_match('@[0-9]@', $password);
 
 $conn = new mysqli("localhost", "root", "","WebShopDB") or die("Connect failed: %s\n". $conn -> error);
+$username = $conn->real_escape_string($username);
 $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
 
 

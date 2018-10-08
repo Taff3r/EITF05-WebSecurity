@@ -1,10 +1,9 @@
 <?php
-	$username = $_POST['name'];
-	$password = $_POST['password'];
-	$conn = new mysqli("localhost", "root", "","WebShopDB"); # or die("Connect failed: %s\n". $conn -> error);
+		$conn = new mysqli("localhost", "root", "","WebShopDB"); # or die("Connect failed: %s\n". $conn -> error);
+		$username = $conn->real_escape_string($_POST['name']);
+		$password = $_POST['password'];
 
 		$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$username'"));
-
     $attempts = mysqli_fetch_array(mysqli_query($conn,"SELECT attempts FROM loginattempts WHERE name = '$username'"));
 
     if($attempts['attempts'] >= 5){

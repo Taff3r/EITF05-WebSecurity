@@ -29,11 +29,12 @@
       }
     }
     if(isset($_POST['input'])){
+      $conn = new mysqli("localhost", "root", "","WebShopDB");
       $input = $_POST['input'];
+      $input = $conn->real_escape_string($input); #Förhindrar SQL-injektion. Kommenterar du bort denna så går det att göra injektioner.
       # Försök härma denna för injektion
       #$injection = "SELECT * FROM products WHERE product_name LIKE '%' UNION(SELECT name, hash FROM users); #'%' ";
       $query = "SELECT * FROM products WHERE product_name LIKE '%$input%'";
-      $conn = new mysqli("localhost", "root", "","WebShopDB");
       $result = mysqli_query($conn, $query);
       while ($row = mysqli_fetch_assoc($result)) {
         constructProduct($row['product_name'], $row['price']);

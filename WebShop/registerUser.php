@@ -28,6 +28,7 @@ $lookupName = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE n
     mysqli_query($conn, $insertUser);
     mysqli_query($conn, $insertCounter);
     setcookie('username', $username, time() + 3600, '/WebShop');
+    session_start();
     echo "Congratulations, $username, you're now ready to shop!";
     echo ' <a href="index.php">return home</a> ';
   }

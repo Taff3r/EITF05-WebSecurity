@@ -5,16 +5,24 @@
 	<head></head>
 	<body>
     <?php
-		
-		session_start(); # Beginning of CSRF protection
+		session_start();
 		if(!isset($_SESSION['token'])){
 			$token = $_SESSION['token'] = generateCSRFToken(); #Generates a CSRF token.
+			$_SESSION['time'] = time();
 		}
 
 		if(isset($_POST['submit'])){
 			if($_POST['csrf'] == $_SESSION['token']){ # Makes sure the POSTed token is equal to that in the session.
+				if(time() - $_SESSION['time'] > 5*60){ # Tokens only last 5 minutes
+					echo "Token expired, please try again ";
+					echo '<br><a href="changePass.php">return home</a> ';
+					$token = $_SESSION['token'] = generateCSRFToken(); #Regen CSRF token.
+					$_SESSION['time'] = time();
+					exit();
+				}
     		if(isset($_COOKIE['username'])){
       		if(isset($_POST['password'])){
+							echo $_SESSION['token'];
           		if($_POST['password'] == $_POST['repeatPass'] && passwordStrengthCheck($_POST['password'])){
             		$conn = new mysqli("localhost", "root", "","WebShopDB");
             		$name = $_COOKIE['username'];
@@ -23,7 +31,8 @@
             		mysqli_query($conn, $query);
             		echo "Password has been changed ";
             		echo '<br><a href="index.php">return home</a> ';
-            		return;
+								session_destroy();
+								return;
           		}
           			echo "Passwords do not match or password is to weak!";
         			}

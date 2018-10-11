@@ -11,7 +11,7 @@
       echo ' <a href="index.php">return home</a> ';
     }elseif($lookup['name'] == $username && password_verify($password,$lookup['hash'])){
 			setcookie('username', $username, time() + 3600, '/WebShop'); # Sets cookie for the user, making him effectivly logged in for one hour.
-      mysqli_query($conn, "UPDATE loginAttempts SET attempts = 0");
+			mysqli_query($conn, "UPDATE loginAttempts SET attempts = 0");
 			echo "Login sucessfull!<br> You're now logged in for an hour, or until you log out.";
       echo ' <a href="index.php">return home</a> ';
 		}else{

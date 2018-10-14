@@ -10,9 +10,10 @@
       echo "Too many attempts to login for this user was made, please contact the admin at admin@forget.it";
       echo ' <a href="index.php">return home</a> ';
     }elseif($lookup['name'] == $username && password_verify($password,$lookup['hash'])){
-			setcookie('username', $username, time() + 3600, '/WebShop'); # Sets cookie for the user, making him effectivly logged in for one hour.
+			$cValue = $username . "_" . $lookup['hash'];
+			setcookie('username', $cValue, time() + 3600, '/WebShop'); # Sets cookie for the user, making him effectivly logged in for one hour.
 			mysqli_query($conn, "UPDATE loginAttempts SET attempts = 0");
-			echo "Login sucessfull!<br> You're now logged in for an hour, or until you log out.";
+			echo "Login sucessfull!<br> You're now logged in for an hour, or until you log out. ";
       echo ' <a href="index.php">return home</a> ';
 		}else{
       mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1");

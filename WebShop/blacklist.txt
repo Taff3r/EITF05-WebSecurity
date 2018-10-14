@@ -1,6 +1,9 @@
 123456
 password
 12345678
+Password1
+Qwerty123
+P4assw0rd
 1234
 pussy
 12345

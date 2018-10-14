@@ -11,9 +11,11 @@
 			<div class = "headerText">
 	<form>
 
-	<?php if(isLoggedIn()){
-	$user = $_COOKIE['username'];
+	<?php
 	$conn = new mysqli("localhost", "root", "","WebShopDB");
+ 	if(authenticateUser($conn)){
+	$user = explode("_",$_COOKIE['username'])[0];
+
 	#har döpt product_name men vet ej vad den heter i er WebShopDB
 	$getQuery = "SELECT * FROM itemsincart JOIN products USING (product_name) WHERE name = '$user'";
 	$addressQuery = "SELECT name, address FROM users WHERE name = '$user'";
@@ -49,8 +51,17 @@
 echo "You are not logged in";
 }
 
-function isLoggedIn(){
-  return isset($_COOKIE['username']);
+function authenticateUser($conn){
+	if(isset($_COOKIE['username'])){
+		$creds = explode("_",$_COOKIE['username']);
+		$name = $creds[0];
+		$query = "SELECT hash FROM users WHERE name = '$name";
+		$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
+		if($creds[1] == $lookup['hash']) {
+			return true;
+		}
+	}
+	return false;
 }
 
 ?>

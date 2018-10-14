@@ -15,12 +15,12 @@
     <input type="submit" value = "Search">
   </form>
   <?php
-
+    $conn = new mysqli("localhost", "root", "","WebShopDB");
     $addedProduct = getProduct();
     if($addedProduct != "noSuchProduct"){
-      if(isLoggedIn()){
-        $user = $_COOKIE['username'];
-        $conn = new mysqli("localhost", "root", "","WebShopDB");
+      if(authenticateUser($conn)){
+        $user = explode("_",$_COOKIE['username'])[0];
+
         $insertQuery =  "INSERT INTO itemsincart VALUES ('$addedProduct', '$user')";
         mysqli_query($conn,$insertQuery);
         echo "$addedProduct has been added to your cart!<br><br>";
@@ -70,8 +70,17 @@
       return "noSuchProduct";
     }
 
-    function isLoggedIn(){
-      return isset($_COOKIE['username']);
+    function authenticateUser($conn){
+      if(isset($_COOKIE['username'])){
+        $creds = explode("_", $_COOKIE['username']);
+        $name = $creds[0];
+        $query = "SELECT hash FROM users WHERE name = '$name";
+        $lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
+        if($creds[1] == $lookup['hash']) {
+          return true;
+        }
+      }
+      return false;
     }
 
 

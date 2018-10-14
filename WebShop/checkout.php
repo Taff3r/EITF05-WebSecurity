@@ -13,16 +13,17 @@
 <a href="index.php">Return home</a>
 <br>
 <?php
-if(isLoggedIn()){
-	$user = $_COOKIE['username'];
-	$conn = new mysqli("localhost", "root", "","WebShopDB");
 
+
+$conn = new mysqli("localhost", "root", "","WebShopDB");
+if(authenticateUser($conn)){
+	$user = explode("_",$_COOKIE['username'])[0];
 	if(isset($_POST['delete'])){
 				$delete = "DELETE FROM itemsincart WHERE name = '$user'";
 				mysqli_query($conn, $delete);
 	      echo "Your cart is now empty";
 	  }
-	#har döpt product_name men vet ej vad den heter i er WebShopDB
+
 	$getQuery = "SELECT product_name FROM itemsincart WHERE name = '$user'";
 
 		if($result = mysqli_query($conn, $getQuery)){
@@ -40,12 +41,6 @@ if(isLoggedIn()){
 	echo "You are not logged in and therfore have no items in your cart";
 }
 
-
-
-	function isLoggedIn(){
-	  return isset($_COOKIE['username']);
-	}
-
 	function getPriceOfProduct($conn, $productName){
 		$getPrice = "SELECT price FROM products WHERE product_name = '$productName'";
 		return mysqli_fetch_array(mysqli_query($conn, $getPrice))['price'] . ' ETH';
@@ -56,6 +51,17 @@ if(isLoggedIn()){
 		return mysqli_fetch_array(mysqli_query($conn, $query))['total'] . ' ETH';
 	}
 
+	function authenticateUser($conn){
+		if(isset($_COOKIE['username'])){
+			list($name, $hash) = explode("_",$_COOKIE['username'], 2);
+			$query = "SELECT hash FROM users WHERE name = '$name";
+			$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
+			if($hash == $lookup['hash']) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 ?>
 <li><a href="kvitto.php">Buy</a></li>

@@ -20,15 +20,19 @@
 					$_SESSION['time'] = time();
 					exit();
 				}
-    		if(isset($_COOKIE['username'])){
+				$conn = new mysqli("localhost", "root", "","WebShopDB");
+    		if(authenticateUser($conn)){
       		if(isset($_POST['password'])){
-							echo $_SESSION['token'];
+
           		if($_POST['password'] == $_POST['repeatPass'] && passwordStrengthCheck($_POST['password'])){
-            		$conn = new mysqli("localhost", "root", "","WebShopDB");
-            		$name = $_COOKIE['username'];
+
+								$name = explode("_",$_COOKIE['username'])[0];
             		$newPassHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
             		$query = "UPDATE users SET hash = '$newPassHash' WHERE name = '$name'";
             		mysqli_query($conn, $query);
+								setcookie("username", $name, time()-1, "WebShop");
+								$cValue = $name . "_" . $newPassHash;
+								setcookie('username', $cValue, time() + 3600, '/WebShop');
             		echo "Password has been changed ";
             		echo '<br><a href="index.php">return home</a> ';
 								session_destroy();
@@ -54,6 +58,18 @@
 
 		function generateCSRFToken(){
 			return bin2hex(random_bytes(128));
+		}
+
+		function authenticateUser($conn){
+			if(isset($_COOKIE['username'])){
+				list($name, $hash) = explode("_",$_COOKIE['username'], 2);
+				$query = "SELECT hash FROM users WHERE name = '$name";
+				$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
+				if($hash == $lookup['hash']) {
+					return true;
+				}
+			}
+			return false;
 		}
     ?>
 		<form action="changePass.php" method="post">

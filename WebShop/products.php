@@ -31,7 +31,7 @@
     if(isset($_POST['input'])){
       $conn = new mysqli("localhost", "root", "","WebShopDB");
       $input = $_POST['input'];
-      $input = $conn->real_escape_string($input); #Förhindrar SQL-injektion. Kommenterar du bort denna så går det att göra injektioner.
+      #$input = $conn->real_escape_string($input); #Förhindrar SQL-injektion. Kommenterar du bort denna så går det att göra injektioner.
       # Försök härma denna för injektion
       #$injection = "SELECT * FROM products WHERE product_name LIKE '%' UNION(SELECT name, hash FROM users); #'%' ";
       $query = "SELECT * FROM products WHERE product_name LIKE '%$input%'";
@@ -78,7 +78,11 @@
         $lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
         if($creds[1] == $lookup['hash']) {
           return true;
-        }
+        }else{
+					#Prevents online brute force using forged cookies.
+					mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1 WHERE name = '$name' ");
+          return false;
+				}
       }
       return false;
     }

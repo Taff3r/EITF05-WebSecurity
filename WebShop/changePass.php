@@ -13,6 +13,7 @@
 
 		if(isset($_POST['submit'])){
 			if($_POST['csrf'] == $_SESSION['token']){ # Makes sure the POSTed token is equal to that in the session.
+
 				if(time() - $_SESSION['time'] > 5*60){ # Tokens only last 5 minutes
 					echo "Token expired, please try again ";
 					echo '<br><a href="changePass.php">return home</a> ';
@@ -23,9 +24,7 @@
 				$conn = new mysqli("localhost", "root", "","WebShopDB");
     		if(authenticateUser($conn)){
       		if(isset($_POST['password'])){
-
           		if($_POST['password'] == $_POST['repeatPass'] && passwordStrengthCheck($_POST['password'])){
-
 								$name = explode("_",$_COOKIE['username'])[0];
             		$newPassHash = password_hash($_POST['password'], PASSWORD_BCRYPT);
             		$query = "UPDATE users SET hash = '$newPassHash' WHERE name = '$name'";
@@ -44,7 +43,7 @@
         		echo "Must be logged in to change password";
       		}
 				}else{
-					echo "<h1> CSRF ALERT!</h1>";
+					header("Location: csrf.php");
 				}
 		}
 
@@ -63,10 +62,15 @@
 		function authenticateUser($conn){
 			if(isset($_COOKIE['username'])){
 				list($name, $hash) = explode("_",$_COOKIE['username'], 2);
+				$name = $conn->real_escape_string($name);
 				$query = "SELECT hash FROM users WHERE name = '$name";
 				$lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
 				if($hash == $lookup['hash']) {
 					return true;
+				}else{
+					#Prevents online brute force using forged cookies.
+					mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1 WHERE name = '$name' ");
+					return false;
 				}
 			}
 			return false;

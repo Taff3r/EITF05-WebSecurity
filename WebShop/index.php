@@ -26,7 +26,7 @@
       <ul>
 		 <?php
 			if(isset($_COOKIE['username'])){
-				echo "Inloggad som ", explode("_",$_COOKIE['username'])[0];
+				echo " Logged in as ", explode("_",$_COOKIE['username'])[0];
 			}
 		?>
        <li><a href="products.php">Browse products</a></li>
@@ -35,8 +35,10 @@
        <li><a href="register.php">Register</a></li>
        <li><a href="checkout.php">Checkout</a></li>
        <li><a href="changePass.php">Change Password</a></li>
-	<li><a href="logout.php">Logout</a></li>
+			 <li><a href="logout.php">Logout</a></li>
+
      </ul>
+		</form>
 		</div>
 
 

@@ -24,6 +24,7 @@
       $gb = fopen('guestComments.txt', 'a');
       fwrite($gb, $username . "  " . date('d-m-y', time()) . ': <br>' . $input . "<hr/>");
       fclose($gb);
+      header("guestbook.php");
     }
   }
 
@@ -34,6 +35,10 @@
       $lookup = mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'"));
       if($hash == $lookup['hash']) {
         return true;
+      }else{
+        #Prevents online brute force using forged cookies.
+        mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1 WHERE name = '$name'");
+        return false;
       }
     }
     return false;

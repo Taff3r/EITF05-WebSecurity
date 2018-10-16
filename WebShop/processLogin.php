@@ -16,7 +16,7 @@
 			echo "Login sucessfull!<br> You're now logged in for an hour, or until you log out. ";
       echo ' <a href="index.php">return home</a> ';
 		}else{
-      mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1");
+      mysqli_query($conn, "UPDATE loginAttempts SET attempts = attempts + 1 WHERE name = '$username'");
 			echo "Wrong Username and/or password";
       echo ' <a href="index.php">return home</a> ';
 		}
